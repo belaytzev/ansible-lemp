@@ -1,0 +1,42 @@
+---
+- name: Locales gen ru_RU.UTF-8
+  locale_gen: name=ru_RU.UTF-8 state=present
+  when: ansible_os_family == "Debian"
+  ignore_errors: True
+  tags: [locales]
+
+- name: Locales gen en_US.UTF-8
+  locale_gen: name=en_US.UTF-8 state=present
+  when: ansible_os_family == "Debian"
+  ignore_errors: True
+  tags: [locales]
+
+- name: Locales Set {{ locales }}
+  template: src=locales.j2 dest=/etc/default/locale
+  when: ansible_os_family == "Debian"
+  ignore_errors: True
+  tags: [locales]
+
+- name: Set LC_ALL
+  command: sh -c export LC_ALL={{ locales }}
+  when: ansible_os_family == "Debian"
+  ignore_errors: True
+  tags: [locales]
+
+- name: Set LANGUAGE
+  command: sh -c export LANGUAGE={{ locales }}
+  when: ansible_os_family == "Debian"
+  ignore_errors: True
+  tags: [locales]
+
+- name: Set LANG
+  command: sh -c export LANG={{ locales }}
+  when: ansible_os_family == "Debian"
+  ignore_errors: True
+  tags: [locales]
+
+- name: Locale gen ru_RU.UTF-8
+  command: locale-gen {{ locales }}
+  when: ansible_os_family == "Debian"
+  ignore_errors: True
+  tags: [locales]

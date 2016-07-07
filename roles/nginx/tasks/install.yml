@@ -1,0 +1,10 @@
+---
+## Debian
+- name: Checks Nginx is installed (Debian)
+  apt: name=nginx state=installed update_cache=yes
+  when: ansible_distribution == 'Debian'
+
+## Ubuntu
+- name: Checks Nginx is installed (Ubuntu)
+  apt: name=nginx state=installed update_cache=yes
+  when: ansible_distribution == 'Ubuntu'

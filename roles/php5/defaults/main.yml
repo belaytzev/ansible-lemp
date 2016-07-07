@@ -1,0 +1,12 @@
+---
+php_configure:
+  - file: /etc/php5/cli/php.ini
+    values:
+      - { section: Date, key: date.timezone, value: '{{php_time_zone}}' }
+      - { section: PHP, key: expose_php, value: '{{php_expose_php}}' }
+      - { section: PHP, key: short_open_tag, value: '{{php_short_open_tag}}' }
+  - file: /etc/php5/fpm/php.ini
+    values:
+      - { section: Date, key: date.timezone, value: '{{php_time_zone}}' }
+      - { section: PHP, key: expose_php, value: '{{php_expose_php}}' }
+      - { section: PHP, key: short_open_tag, value: '{{php_short_open_tag}}' }

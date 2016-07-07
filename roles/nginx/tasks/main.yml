@@ -1,0 +1,8 @@
+---
+- include: repo.yml
+- include: install.yml
+
+- name: Checks Nginx is started and enabled to start at boot
+  service: name=nginx state=restarted enabled=yes
+
+- include: configure.yml

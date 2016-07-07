@@ -1,0 +1,52 @@
+---
+- hosts: all
+  become: yes
+  roles:
+     - { role: common, tags: common }
+     - { role: nginx, tags: nginx }
+     - { role: php5, tags: php5 }
+     - { role: composer, tags: composer }
+     - { role: mysql, tags: mysql }
+
+  vars:
+    #Role common
+    packages:
+      - sudo
+      - mc
+      - atop
+      - htop
+      - rcconf
+      - ncdu
+      - git
+      - ntp
+      - cron
+      - curl
+      - locales
+      - unattended-upgrades
+
+    timezone: Europe/Moscow
+    locales: ru_RU.UTF-8
+
+    #Role Nginx
+    nginx_server_name: example.com
+    nginx_project_name: Example
+    nginx_user: www-data
+    nginx_root: "/var/www/{{ nginx_project_name }}"
+
+    #Role PHP
+    php_packages:
+      - php5
+      - php5-cli
+      - php5-fpm
+      - php5-curl
+      - php5-gd
+      - php5-json
+      - php5-mcrypt
+
+    php_time_zone: Europe/Moscow
+    php_expose_php: Off
+    php_short_open_tag: On
+
+    #Role MySQL
+    user_db: root
+    passwd_db: root

@@ -1,0 +1,6 @@
+---
+- include: update.yml
+- include: install.yml
+- include: time.yml
+- include: locales.yml
+- include: sysctl.yml

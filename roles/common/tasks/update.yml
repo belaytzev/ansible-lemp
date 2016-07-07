@@ -1,0 +1,9 @@
+---
+- name: Change source list to Yandex Mirror
+  template: src=source_list_debian.j2 dest=/etc/apt/sources.list
+  when: ansible_distribution == 'Debian'
+
+- name: Update Cache
+  apt: update_cache=yes
+  ignore_errors: True
+  when: ansible_os_family == 'Debian'

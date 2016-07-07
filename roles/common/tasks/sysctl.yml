@@ -1,0 +1,8 @@
+---
+- name: Copy sysctl conf from https://github.com/klaver/sysctl
+  copy: src=sysctl.conf dest=/etc/sysctl.conf owner=root group=root mode=0644 backup=yes
+
+- name: Apply sysctl config from https://github.com/klaver/sysctl
+  command: sysctl -p
+  ignore_errors: True
+

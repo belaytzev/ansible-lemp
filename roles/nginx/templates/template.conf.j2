@@ -1,0 +1,61 @@
+server {
+
+    listen   80;
+    listen [::]:80;
+    server_name {{ nginx_server_name }};
+    index index.html index.php index.htm;
+    root {{ nginx_root }};
+
+    access_log /var/log/nginx/{{ nginx_project_name }}_access.log;
+    error_log /var/log/nginx/{{ nginx_project_name }}_error.log warn;
+
+    location / {
+		    try_files $uri $uri/ /index.php?$query_string;
+	  }
+
+    location ~* ^/(jpg|jpeg|gif|png|bmp|swf|htc|js|css|ico|pdf|gz|png|dt|rar|zip|tif|tiff|xls|xlsx|doc|docx|ppt|pptx|img|flv|download)/(.+)$ {
+    	if (!-f $request_filename) {rewrite ^(.*)$ /index.php last;}
+        access_log        off;
+		expires           max;
+    }
+
+    location ~ \.php {
+    		fastcgi_index  index.php;
+
+		    fastcgi_param  DOCUMENT_ROOT    $document_root;
+		    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+		    fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_script_name;
+
+		    include fastcgi_params;
+		    fastcgi_param  QUERY_STRING     $query_string;
+		    fastcgi_param  REQUEST_METHOD   $request_method;
+		    fastcgi_param  CONTENT_TYPE     $content_type;
+		    fastcgi_param  CONTENT_LENGTH   $content_length;
+		    fastcgi_intercept_errors        on;
+		    fastcgi_ignore_client_abort     off;
+		    fastcgi_connect_timeout 60;
+		    fastcgi_send_timeout 180;
+		    fastcgi_read_timeout 180;
+		    fastcgi_buffer_size 128k;
+		    fastcgi_buffers 4 256k;
+		    fastcgi_busy_buffers_size 256k;
+		    fastcgi_temp_file_write_size 256k;
+		    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    }
+
+    location = /favicon.ico {
+		    log_not_found off;
+		    access_log off;
+	  }
+
+    location = /robots.txt {
+		    allow all;
+		    log_not_found off;
+		    access_log off;
+	  }
+
+    ## Disable viewing .htaccess & .htpassword
+	  location ~ /\.ht {
+		    deny  all;
+	  }
+}

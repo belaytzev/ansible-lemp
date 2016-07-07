@@ -1,0 +1,22 @@
+---
+- name: Add Key Repo
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  when: ansible_os_family == "Debian"
+
+- name: Add Nginx Repo (Ubuntu)
+  template:
+    src: nginx.repo.ubuntu.j2
+    dest: /etc/apt/sources.list.d/nginx.list
+    owner: root
+    group: root
+    mode:  0644
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Add Nginx Repo (Debian)
+  template:
+    src: nginx.repo.debian.j2
+    dest: /etc/apt/sources.list.d/nginx.list
+    owner: root
+    group: root
+    mode:  0644
+  when: ansible_distribution == 'Debian'

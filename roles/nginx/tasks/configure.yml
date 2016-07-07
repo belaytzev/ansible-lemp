@@ -1,0 +1,35 @@
+---
+#Config
+- name: Copy Nginx configuration in place
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Remove default nginx config file (if configured)
+  file:
+    path: "{{ nginx_default_vhost_path }}"
+    state: absent
+  when: nginx_remove_default_vhost
+
+- name: Assures /etc/nginx/sites-available dir exists
+  file: path=/etc/nginx/sites-available state=directory
+
+- name: Assures /etc/nginx/sites-enabled dir exists
+  file: path=/etc/nginx/sites-enabled state=directory
+
+- name: Put config file
+  template:
+    src: template.conf.j2
+    dest: /etc/nginx/sites-available/{{ nginx_project_name }}.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Symlinc config file
+  file: src=/etc/nginx/sites-available/{{ nginx_project_name }}.conf dest=/etc/nginx/sites-enabled/{{ nginx_project_name }}.conf state=link
+
+- name: Reload Nginx
+  service: name=nginx state=reloaded

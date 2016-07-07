@@ -1,0 +1,21 @@
+---
+- name: Add Repo Key PHP5.6 for Debian 7 Wheezy
+  apt_key: url=https://www.dotdeb.org/dotdeb.gpg state=present
+  when: ansible_distribution_release == "wheezy"
+
+- name: Add Repo PHP5.6 for Debian 7 Wheezy
+  template: src=dotdeb-php56.j2
+            dest=/etc/apt/sources.list.d/dotdeb-php56.list
+            owner=root
+            group=root
+            mode=0644
+  when: ansible_distribution_release == "wheezy"
+
+- name: Add Repo PHP5.6 for Ubuntu 14.04
+  apt_repository: repo='ppa:ondrej/php5-5.6'
+  when: ansible_distribution_version == "14.04"
+
+- name: Install PHP Packages
+  apt: name={{item}} state=installed update_cache=yes
+  with_items: php_packages
+  ignore_errors: True
