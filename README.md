@@ -1,6 +1,3 @@
-# ansible-lemp
-Ansible playbook for install LEMP stack
-
 # Ansible playbook for install LEMP stack
 1. Install Ansible [Install Ansible](http://docs.ansible.com/ansible/intro_installation.html)
 2. Clone repository from Github `https://github.com/belaytzev/ansible-lemp.git`
